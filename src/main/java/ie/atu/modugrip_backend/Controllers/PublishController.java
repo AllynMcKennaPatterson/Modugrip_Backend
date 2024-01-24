@@ -15,10 +15,10 @@ public class PublishController {
     }
 
     @PostMapping("/publish-slider")
-    public void publishSlider(@RequestBody SliderData sliderData) {
+    public SliderData publishSlider(@RequestBody SliderData sliderData) {
         System.out.println("Publishing Slider data: " + sliderData);
-
         sliderDataService.publishSliderData(sliderData);
+        return sliderData;
     }
 
 }
