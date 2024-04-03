@@ -1,6 +1,7 @@
 package ie.atu.modugrip_backend.Services;
 
 import ie.atu.modugrip_backend.Clients.PublishServiceClient;
+import ie.atu.modugrip_backend.InverseKinematics.InverseKinematics;
 import ie.atu.modugrip_backend.Models.Coordinates;
 import ie.atu.modugrip_backend.Models.SliderData;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,12 @@ public class CoordinateService {
     }
 
     public void publishCoordinateValues(Coordinates coordinates){
-        System.out.println("Coordinate Values Service: "+ coordinates);
-//        publishServiceClient.publishSlider(sliderData);
+        InverseKinematics ik = new InverseKinematics(30, 10, coordinates.getX(), coordinates.getY());
+        calcAngles(ik);
+    }
 
+    public void calcAngles(InverseKinematics ik){
+        System.out.println("IK object: " + ik);
+        ik.negPosAngleCalc();
     }
 }
