@@ -1,17 +1,20 @@
 package ie.atu.modugrip_backend.Services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import ie.atu.modugrip_backend.Clients.PublishServiceClient;
 import ie.atu.modugrip_backend.Interfaces.ActionScriptRepo;
-import ie.atu.modugrip_backend.Models.ScriptModels.Action;
-import ie.atu.modugrip_backend.Models.ScriptModels.Data;
-import ie.atu.modugrip_backend.Models.ScriptModels.Script;
-import ie.atu.modugrip_backend.Models.ScriptModels.ScriptString;
+import ie.atu.modugrip_backend.Models.ScriptModels.*;
 import ie.atu.modugrip_backend.Models.SliderData;
+
+import org.bson.Document;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -19,20 +22,96 @@ public class ScriptService {
 
     PublishServiceClient publishServiceClient;
     ActionScriptRepo scriptRepo;
+
+    private final MongoCollection<Document> collection;
+
+    MongoService mongoService;
     private final ObjectMapper objectMapper;
 
-    public ScriptService(PublishServiceClient publishServiceClient, ActionScriptRepo scriptRepo, ObjectMapper objectMapper){
+    public ScriptService(PublishServiceClient publishServiceClient, ActionScriptRepo scriptRepo, ObjectMapper objectMapper, MongoService mongoService, MongoCollection<Document> collection){
         this.publishServiceClient = publishServiceClient;
         this.scriptRepo = scriptRepo;
         this.objectMapper = objectMapper;
+        this.mongoService = mongoService;
+        this.collection = collection;
     }
 
     public void saveScriptToMongo(String json) throws IOException {
         System.out.println("JSON: " + json);
-        ScriptString script = new ScriptString();
-        script.setJsonString(json);
-        scriptRepo.save(script);
+
+        //New code
+        ObjectMapper objectMapper = new ObjectMapper();
+        ScriptData scriptString = objectMapper.readValue(json, ScriptData.class);
+
+//        ScriptString script = new ScriptString();
+//        script.setJsonString(json);
+        scriptString.setName(scriptString.getName());
+        scriptString.setAction(scriptString.getAction());
+        scriptRepo.save(scriptString);
+
+
+
+        //Old code
+//        ScriptString script = new ScriptString();
+//        script.setJsonString(json);
+//        scriptRepo.save(script);
     }
+
+//    public List<ScriptString> getAllScripts(){
+//        List<ScriptString> allScripts = mongoService.getAllJsonStrings();
+//        System.out.printf("All Scripts:" + allScripts + "\n");
+//        return allScripts;
+//    }
+
+    public List<ScriptString> getAllScripts() {
+        List<ScriptString> allScripts = new ArrayList<>();
+
+        // Query to retrieve all documents from the collection
+        List<Document> documents = mongoService.getAllDocuments();
+
+        // Convert each document to ScriptString object
+        for (Document doc : documents) {
+            ScriptString scriptString = new ScriptString();
+
+            scriptString.setId(doc.getObjectId("_id").toString());
+            // Set the name value
+            if (doc.containsKey("name")) {
+                scriptString.setName(doc.getString("name"));
+            }
+
+            if (doc.containsKey("action")) {
+                scriptString.setAction((List<Data>) doc.get("action"));
+            }
+
+            // Set the action object
+//            if (doc.containsKey("action")) {
+//                Object actionObject = doc.get("action");
+//                if (actionObject instanceof Document) {
+//                    // Convert the action object to ScriptAction object or any appropriate class
+//                    // For example:
+//                    Action action = convertToScriptAction((Document) actionObject);
+//                    scriptString.setAction(action);
+//                }
+//            }
+
+//            scriptString.setJsonString(doc.getString("jsonString"));
+            // Set other fields if needed
+
+            allScripts.add(scriptString);
+        }
+
+        return allScripts;
+    }
+
+//    private Action convertToScriptAction(Document actionDocument) {
+//        // Implement conversion logic as per your requirement
+//        // For example:
+//        Action action = new Action();
+//        action.set(actionDocument.getString("actionType"));
+//        action.setIndex(actionDocument.getInteger("index"));
+//        // Set other fields
+//        return action;
+//    }
 
     public void processSliderAction(int index, Action action) {
         // Process slider action
