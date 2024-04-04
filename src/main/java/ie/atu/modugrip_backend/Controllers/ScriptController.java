@@ -1,11 +1,9 @@
 package ie.atu.modugrip_backend.Controllers;
 
 //import ie.atu.modugrip_backend.Interfaces.ActionScriptRepo;
-import ie.atu.modugrip_backend.Models.ScriptModels.Action;
-import ie.atu.modugrip_backend.Models.ScriptModels.Data;
-import ie.atu.modugrip_backend.Models.ScriptModels.Script;
-import ie.atu.modugrip_backend.Models.ScriptModels.ScriptString;
+import ie.atu.modugrip_backend.Models.ScriptModels.*;
 import ie.atu.modugrip_backend.Services.ScriptService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +48,21 @@ public class ScriptController {
 
     @PostMapping("/save-script")
     public void saveScript(@RequestBody String script) throws IOException {
-        scriptService.saveScriptToMongo(script);
+        if("[]".equals(script)){
+            System.out.println("Script is empty");
+        }
+        else{
+            scriptService.saveScriptToMongo(script);
+        }
+    }
+
+//    @GetMapping("fetch-scripts")
+//    public List<String> fetchScripts(){
+//        return scriptService.getAllScripts();
+//    }
+
+    @GetMapping("fetch-scripts")
+    public List<ScriptString> fetchScripts(){
+        return scriptService.getAllScripts();
     }
 }
