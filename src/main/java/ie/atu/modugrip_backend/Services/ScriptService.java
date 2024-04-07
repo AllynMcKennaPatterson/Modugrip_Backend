@@ -42,26 +42,14 @@ public class ScriptService {
         //New code
         ObjectMapper objectMapper = new ObjectMapper();
         ScriptData scriptString = objectMapper.readValue(json, ScriptData.class);
-
-//        ScriptString script = new ScriptString();
-//        script.setJsonString(json);
-        scriptString.setName(scriptString.getName());
-        scriptString.setAction(scriptString.getAction());
-        scriptRepo.save(scriptString);
-
-
-
-        //Old code
-//        ScriptString script = new ScriptString();
-//        script.setJsonString(json);
-//        scriptRepo.save(script);
+        if (scriptString.getAction().isEmpty()) {
+            System.out.println("Script is empty");
+        } else {
+            scriptString.setName(scriptString.getName());
+            scriptString.setAction(scriptString.getAction());
+            scriptRepo.save(scriptString);
+        }
     }
-
-//    public List<ScriptString> getAllScripts(){
-//        List<ScriptString> allScripts = mongoService.getAllJsonStrings();
-//        System.out.printf("All Scripts:" + allScripts + "\n");
-//        return allScripts;
-//    }
 
     public List<ScriptString> getAllScripts() {
         List<ScriptString> allScripts = new ArrayList<>();
@@ -136,4 +124,8 @@ public class ScriptService {
         System.out.println("Processing end effector action at index " + index + ": " + action.toString());
     }
 
+
+    public void deleteScriptByName(String name){
+        mongoService.deleteDocumentByName(name);
+    }
 }
