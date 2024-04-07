@@ -65,4 +65,11 @@ public class ScriptController {
     public List<ScriptString> fetchScripts(){
         return scriptService.getAllScripts();
     }
+
+    @PostMapping("/delete-script")
+    public String deleteScript(@RequestBody String name){
+        System.out.println("Name: " + name);
+        scriptService.deleteScriptByName(name);
+        return name;
+    }
 }

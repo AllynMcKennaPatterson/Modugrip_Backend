@@ -1,7 +1,14 @@
 package ie.atu.modugrip_backend.Services;
 
 import com.mongodb.client.*;
+import ie.atu.modugrip_backend.Interfaces.ActionScriptRepo;
+import ie.atu.modugrip_backend.Models.ScriptModels.ScriptData;
+import ie.atu.modugrip_backend.Models.ScriptModels.ScriptString;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import com.mongodb.client.FindIterable;
 
@@ -15,6 +22,8 @@ public class MongoService {
     private final MongoDatabase database;
     private final MongoCollection<Document> collection;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
     public MongoService() {
         // Connect to MongoDB
         mongoClient = MongoClients.create("mongodb://localhost:27017"); // Change this to your MongoDB URI
@@ -57,4 +66,18 @@ public class MongoService {
 
         return documents;
     }
+
+    public void deleteDocumentByName(String name) {
+        try {
+            String nameWithoutQuotes = name.replaceAll("^\"|\"$", "");
+            System.out.println("Name2: " + nameWithoutQuotes);
+            Query query = new Query();
+            query.addCriteria(Criteria.where("name").is(nameWithoutQuotes));
+            mongoTemplate.remove(query, ScriptData.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
