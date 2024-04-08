@@ -16,7 +16,9 @@ public class CoordinateService {
     }
 
     public void publishCoordinateValues(Coordinates coordinates){
-        InverseKinematics ik = new InverseKinematics(30, 10, coordinates.getX(), coordinates.getY());
+        InverseKinematics ik = new InverseKinematics(30, 10, coordinates.getY(), coordinates.getZ());
+        System.out.println("Y: " + coordinates.getY());
+        System.out.println("Z: " + coordinates.getZ());
         calcAngles(ik);
     }
 
