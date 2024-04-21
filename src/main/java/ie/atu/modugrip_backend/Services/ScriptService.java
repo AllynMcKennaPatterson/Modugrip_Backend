@@ -5,9 +5,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import ie.atu.modugrip_backend.Clients.PublishServiceClient;
 import ie.atu.modugrip_backend.Interfaces.ActionScriptRepo;
+import ie.atu.modugrip_backend.Models.GripperData;
 import ie.atu.modugrip_backend.Models.ScriptModels.*;
 import ie.atu.modugrip_backend.Models.SliderData;
 
+import ie.atu.modugrip_backend.Models.ToolStatus;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 
@@ -108,9 +110,20 @@ public class ScriptService {
         sd.setServo1(Integer.parseInt(action.getVal1()));
         sd.setServo2(Integer.parseInt(action.getVal2()));
         sd.setServo3(Integer.parseInt(action.getVal3()));
-        sd.setServo4(Integer.parseInt(action.getVal4()));
         sd.setServo5(Integer.parseInt(action.getVal5()));
         publishServiceClient.publishSlider(sd);
+    }
+
+    public void processGripperAction(int index, int width) {
+        GripperData gd = new GripperData();
+        gd.setServo4(width);
+        publishServiceClient.publishGripper(gd);
+    }
+
+    public void processToolStatus(int status){
+        ToolStatus ts = new ToolStatus();
+        ts.setToolstatus(status);
+        publishServiceClient.publishToolStatus(ts);
     }
 
     public void processDelayAction(int index, int delay) throws InterruptedException {
@@ -118,6 +131,8 @@ public class ScriptService {
         System.out.println("Processing delay action at index " + index + ": delay = " + delay);
         Thread.sleep(delay);
     }
+
+
 
     public void processEndEffectorAction(int index, Action action) {
         // Process end effector action

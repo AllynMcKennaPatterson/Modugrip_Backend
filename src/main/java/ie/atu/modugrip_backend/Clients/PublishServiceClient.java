@@ -1,8 +1,9 @@
 package ie.atu.modugrip_backend.Clients;
 
-import feign.Headers;
 import ie.atu.modugrip_backend.Interceptor.FeignConfig;
+import ie.atu.modugrip_backend.Models.GripperData;
 import ie.atu.modugrip_backend.Models.SliderData;
+import ie.atu.modugrip_backend.Models.ToolStatus;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,4 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface PublishServiceClient {
     @PostMapping("")
     void publishSlider(@RequestBody SliderData sliderData);
+
+    @PostMapping("")
+    void publishGripper(@RequestBody GripperData gripperData);
+
+    @PostMapping("")
+    void publishToolStatus(@RequestBody ToolStatus toolStatus);
 }

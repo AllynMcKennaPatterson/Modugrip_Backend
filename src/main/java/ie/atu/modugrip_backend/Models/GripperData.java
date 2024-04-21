@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SliderData {
-    int servo1;
-    int servo2;
-    int servo3;
-    int servo5;
+public class GripperData {
+    int servo4;
 }

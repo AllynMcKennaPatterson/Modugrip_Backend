@@ -2,6 +2,7 @@ package ie.atu.modugrip_backend.Controllers;
 
 //import ie.atu.modugrip_backend.Interfaces.ActionScriptRepo;
 import ie.atu.modugrip_backend.Models.ScriptModels.*;
+import ie.atu.modugrip_backend.Models.ToolStatus;
 import ie.atu.modugrip_backend.Services.ScriptService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,18 @@ public class ScriptController {
                     Action endEffectorAction = s.getData().getAction();
                     scriptService.processEndEffectorAction(index, endEffectorAction);
                     break;
+                case "gripper":
+                    int gripperAction = s.getData().getWidth();
+                    scriptService.processGripperAction(index, gripperAction);
+                case "toolStatus":
+                    int toolStatus;
+                    if (s.getData().getStatus() == true){
+                        toolStatus = 1;
+                    }
+                    else{
+                        toolStatus = 0;
+                    }
+                    scriptService.processToolStatus(toolStatus);
                 default:
                     // Handle unknown action type
                     break;
