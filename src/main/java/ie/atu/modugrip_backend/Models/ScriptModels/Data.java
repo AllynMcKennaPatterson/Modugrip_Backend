@@ -10,6 +10,10 @@ public class Data {
     private Action action;
     private Integer delay;
 
+    private boolean status;
+
+    private int width;
+
     // Getters and setters
     @JsonProperty("actionType")
     public String getActionType() {
@@ -42,6 +46,12 @@ public class Data {
     public int getDelay() {
         return delay;
     }
+
+    @JsonProperty("width")
+    public int getWidth(){ return width; }
+
+    @JsonProperty("status")
+    public boolean getStatus(){return status;}
 
     public void setDelay(int delay) {
         this.delay = delay;
