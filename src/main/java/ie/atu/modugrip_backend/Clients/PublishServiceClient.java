@@ -1,6 +1,7 @@
 package ie.atu.modugrip_backend.Clients;
 
 import ie.atu.modugrip_backend.Interceptor.FeignConfig;
+import ie.atu.modugrip_backend.Models.CoordsAngles;
 import ie.atu.modugrip_backend.Models.GripperData;
 import ie.atu.modugrip_backend.Models.SliderData;
 import ie.atu.modugrip_backend.Models.ToolStatus;
@@ -18,4 +19,7 @@ public interface PublishServiceClient {
 
     @PostMapping("")
     void publishToolStatus(@RequestBody ToolStatus toolStatus);
+
+    @PostMapping("")
+    void publishCoords(@RequestBody CoordsAngles coordsAngles);
 }

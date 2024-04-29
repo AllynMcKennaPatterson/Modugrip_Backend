@@ -41,7 +41,6 @@ public class ScriptService {
     public void saveScriptToMongo(String json) throws IOException {
         System.out.println("JSON: " + json);
 
-        //New code
         ObjectMapper objectMapper = new ObjectMapper();
         ScriptData scriptString = objectMapper.readValue(json, ScriptData.class);
         if (scriptString.getAction().isEmpty()) {
@@ -72,36 +71,12 @@ public class ScriptService {
             if (doc.containsKey("action")) {
                 scriptString.setAction((List<Data>) doc.get("action"));
             }
-
-            // Set the action object
-//            if (doc.containsKey("action")) {
-//                Object actionObject = doc.get("action");
-//                if (actionObject instanceof Document) {
-//                    // Convert the action object to ScriptAction object or any appropriate class
-//                    // For example:
-//                    Action action = convertToScriptAction((Document) actionObject);
-//                    scriptString.setAction(action);
-//                }
-//            }
-
-//            scriptString.setJsonString(doc.getString("jsonString"));
-            // Set other fields if needed
-
             allScripts.add(scriptString);
         }
 
         return allScripts;
     }
 
-//    private Action convertToScriptAction(Document actionDocument) {
-//        // Implement conversion logic as per your requirement
-//        // For example:
-//        Action action = new Action();
-//        action.set(actionDocument.getString("actionType"));
-//        action.setIndex(actionDocument.getInteger("index"));
-//        // Set other fields
-//        return action;
-//    }
 
     public void processSliderAction(int index, Action action) {
         // Process slider action

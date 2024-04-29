@@ -15,11 +15,6 @@ import java.util.List;
 public class ScriptData {
     @Id
     private String id;
-
     private String name;
     private List<Object> action;
-
-
-    // Getters and setters
-    // Implement them accordingly
 }

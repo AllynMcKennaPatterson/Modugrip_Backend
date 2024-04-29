@@ -69,11 +69,6 @@ public class ScriptController {
         }
     }
 
-//    @GetMapping("fetch-scripts")
-//    public List<String> fetchScripts(){
-//        return scriptService.getAllScripts();
-//    }
-
     @GetMapping("fetch-scripts")
     public List<ScriptString> fetchScripts(){
         return scriptService.getAllScripts();
